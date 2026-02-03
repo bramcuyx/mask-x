@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "mask-x"
+version = "0.1.0"
+description = ""
+authors = ["Bram Cuyx <bram.cuyx@vliz.be>"]
+readme = "README.md"
+packages-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Nmf = {git = "git@gitlab.vliz.be:research/nmf.git", branch = "master"}
+soundfile = "^0.12.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
