@@ -4,12 +4,13 @@ version = "0.1.0"
 description = ""
 authors = ["Bram Cuyx <bram.cuyx@vliz.be>"]
 readme = "README.md"
-packages-mode = false
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
 Nmf = {git = "git@gitlab.vliz.be:research/nmf.git", branch = "master"}
 soundfile = "^0.12.1"
+pandas = "^3.0.0"
 
 
 [build-system]
