@@ -231,6 +231,7 @@ def estimate_mask_file(
     plot=False,
     resampled_sr=None,
     min_db=None,
+    return_axes=False,
 ):
     """Estimate a binary mask for the input audio file using NMF and median subtraction.
 
@@ -244,11 +245,14 @@ def estimate_mask_file(
         plot (bool): Whether to plot the spectrograms and masks.
         resampled_sr (int): Resampled sample rate for the audio file. Default is None.
         min_db (float | None): Minimum dB floor for the spectrogram scale. When None, auto-scales.
+        return_axes (bool): Whether to return the spectrogram frequency/time axes.
     Returns:
         mask (np.ndarray): Estimated binary mask.
         med_substracted (np.ndarray): Median-subtracted spectrogram in dB.
         median (np.ndarray): Estimated median spectrum.
         Sxx (np.ndarray): Original spectrogram of the audio signal.
+        f (np.ndarray, optional): Spectrogram frequencies, returned when return_axes is True.
+        t (np.ndarray, optional): Spectrogram times, returned when return_axes is True.
     """
     data, sampleRate = sf.read(file)
     if data.size == 0:
@@ -283,4 +287,6 @@ def estimate_mask_file(
         )
 
 
+    if return_axes:
+        return mask_med_subs_nmf, med_substracted_nmf, median_nmf, Sxx, f, t
     return mask_med_subs_nmf, med_substracted_nmf, median_nmf, Sxx
