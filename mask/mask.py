@@ -5,7 +5,7 @@ import scipy.signal
 import matplotlib.pyplot as plt
 import numpy as np
 
-def estimate_mask(file, rank = 25, reduced_rank=15, nperseg = 256, noverlap = 128, padding=1, maxiter=1000, plot = False):
+def estimate_mask(file, rank = 25, reduced_rank=15, nperseg = 256, noverlap = 128, padding=1, threshold=1.0, maxiter=1000, plot = False):
     """Estimate a binary mask for the input audio file using NMF.
 
     Args:
@@ -14,6 +14,9 @@ def estimate_mask(file, rank = 25, reduced_rank=15, nperseg = 256, noverlap = 12
         nperseg (int): Length of each segment for STFT.
         noverlap (int): Number of overlapping samples between segments.
         padding (int): Padding around the event in seconds.
+        threshold (float): Detection threshold for the normalised residual (residual relative to
+            the 75th-percentile background level). A value of 1.0 means the residual must exceed
+            twice the background level; higher values are more conservative. Default is 1.0.
 
     intermediates:
         data (np.ndarray): Audio time series data.
@@ -91,9 +94,10 @@ def estimate_mask(file, rank = 25, reduced_rank=15, nperseg = 256, noverlap = 12
     end_frame = int((t[-1]-padding)*frames_per_sec)
 
     mask = np.zeros_like(Sxx, dtype=bool)
-    mask[:, start_frame:end_frame] = 0
-    medi = np.quantile(residual,0.75, axis=1, keepdims=True)
-    var = (residual-medi)/medi  
+    q75 = np.quantile(residual, 0.75, axis=1, keepdims=True)
+    normalized_residual = (residual - q75) / q75
+    mask[:, start_frame:end_frame] = normalized_residual[:, start_frame:end_frame] > threshold
+    return mask, residual
 
 
 def plot_masked_spect(
