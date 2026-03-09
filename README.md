@@ -1,5 +1,23 @@
 # Tool for extracting masks as input for the underwater acoustics simulation tool
 
+## Environment setup
+
+Install Poetry with `pipx`:
+
+```bash
+python3 -m pip install --user pipx
+python3 -m pipx ensurepath
+pipx install poetry
+```
+
+Create/install the project virtual environment and dependencies:
+
+```bash
+poetry lock
+poetry install
+```
+For more information, see the [Poetry documentation](https://python-poetry.org/docs/).
+
 ## Mask curation workflow
 
 The reusable workflow lives in [mask/run_mask.py](mask/run_mask.py). It is designed for a manual review loop where bad masks are removed based on visual inspection of plots.
