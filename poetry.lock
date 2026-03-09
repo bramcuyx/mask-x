@@ -1003,9 +1003,9 @@ soundfile = "^0.12.1"
 
 [package.source]
 type = "git"
-url = "ssh://git@gitlab.vliz.be/research/nmf.git"
+url = "ssh://git@github.com/bramcuyx/nmf.git"
 reference = "master"
-resolved_reference = "cf2320725ebb356277cb3cdf2e029a15690b6222"
+resolved_reference = "9b9fd69322304906fcbc5437d05205c568f187d4"
 
 [[package]]
 name = "numpy"
@@ -1852,4 +1852,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "37d9b9c036ea57872171be423435c4bc0515558cd36545f57d8fe01b655c7ba6"
+content-hash = "b27d4dd6ead3e95eb92f068872bcbb7f583c3bb021306a464ee91d3855a85e9f"
