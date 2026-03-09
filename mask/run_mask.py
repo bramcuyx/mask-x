@@ -2,6 +2,7 @@ import pathlib
 import shutil
 import numpy as np
 import matplotlib.pyplot as plt
+import yaml
 import mask as m
 
 # %%
@@ -13,26 +14,39 @@ import mask as m
 # 5) Copy curated alternative plots into the main plots folder.
 # 6) Delete masks that do not have a plot.
 
-EVENTS_FOLDER = pathlib.Path('/mnt/fscompute_shared/simulation_dataset/events')
-MASKS_FOLDER = pathlib.Path('/mnt/fscompute_shared/simulation_dataset/masks')
-PLOTS_FOLDER = pathlib.Path('/mnt/fscompute_shared/simulation_dataset/masks_plots')
+CONFIG_PATH = pathlib.Path(__file__).with_name('mask_config.yaml')
 
-ALT_BASE_FOLDER = pathlib.Path('/mnt/fscompute_shared/simulation_dataset/masks_plots_alternative')
-ALT_3_DB_PLOTS = ALT_BASE_FOLDER / 'plots_thr_3db'
-ALT_3_DB_MASKS = ALT_BASE_FOLDER / 'masks_thr_3db'
-ALT_4_5_DB_PLOTS = ALT_BASE_FOLDER / 'plots_thr_4p5db'
-ALT_4_5_DB_MASKS = ALT_BASE_FOLDER / 'masks_thr_4p5db'
 
-RESAMPLED_SR = 48000
-PADDING = 1.0
+def load_config(config_path: pathlib.Path) -> dict:
+    with config_path.open('r', encoding='utf-8') as file:
+        return yaml.safe_load(file)
 
-RUN_INITIAL_MASKS = False
-RUN_REESTIMATE_MISSING = False
-COPY_CURATED_PLOTS = False
-REMOVE_MASKS_WITHOUT_PLOTS = False
 
-# Pick the curated alternative folder you want to copy from.
-CURATED_PLOTS_FOLDER = ALT_3_DB_PLOTS
+config = load_config(CONFIG_PATH)
+
+EVENTS_FOLDER = pathlib.Path(config['paths']['events_folder'])
+MASKS_FOLDER = pathlib.Path(config['paths']['masks_folder'])
+PLOTS_FOLDER = pathlib.Path(config['paths']['plots_folder'])
+
+ALT_BASE_FOLDER = pathlib.Path(config['paths']['alt_base_folder'])
+ALT_3_DB_PLOTS = ALT_BASE_FOLDER / config['paths']['alt_3_db_plots_subfolder']
+ALT_3_DB_MASKS = ALT_BASE_FOLDER / config['paths']['alt_3_db_masks_subfolder']
+ALT_4_5_DB_PLOTS = ALT_BASE_FOLDER / config['paths']['alt_4_5_db_plots_subfolder']
+ALT_4_5_DB_MASKS = ALT_BASE_FOLDER / config['paths']['alt_4_5_db_masks_subfolder']
+
+RESAMPLED_SR = config['processing']['resampled_sr']
+PADDING = config['processing']['padding']
+
+RUN_INITIAL_MASKS = config['flags']['run_initial_masks']
+RUN_REESTIMATE_MISSING = config['flags']['run_reestimate_missing']
+COPY_CURATED_PLOTS = config['flags']['copy_curated_plots']
+REMOVE_MASKS_WITHOUT_PLOTS = config['flags']['remove_masks_without_plots']
+
+INITIAL_THRESHOLD_DB = config['processing']['initial_threshold_db']
+REESTIMATE_THRESHOLDS_DB = config['processing']['reestimate_thresholds_db']
+
+curated_subfolder = config['paths']['curated_plots_subfolder']
+CURATED_PLOTS_FOLDER = ALT_BASE_FOLDER / curated_subfolder
 
 
 def get_event_files(events_folder: pathlib.Path) -> list[pathlib.Path]:
@@ -129,7 +143,7 @@ if RUN_INITIAL_MASKS:
     # Step 1: initial mask estimation at threshold 3.0
     estimate_and_save(
         event_files,
-        threshold=3.0,
+        threshold=INITIAL_THRESHOLD_DB,
         masks_folder=MASKS_FOLDER,
         plots_folder=PLOTS_FOLDER,
         overwrite_masks=False,
@@ -146,9 +160,10 @@ print(f"Files with masks but no plots: {len(missing_stems)}")
 if RUN_REESTIMATE_MISSING:
     # Step 3: recompute only the deleted ones at threshold 3.0 and 4.5
     missing_files = stems_to_event_files(missing_stems, EVENTS_FOLDER)
+    threshold_3_db, threshold_4_5_db = REESTIMATE_THRESHOLDS_DB
     estimate_and_save(
         missing_files,
-        threshold=3.0,
+        threshold=threshold_3_db,
         masks_folder=ALT_3_DB_MASKS,
         plots_folder=ALT_3_DB_PLOTS,
         overwrite_masks=True,
@@ -156,7 +171,7 @@ if RUN_REESTIMATE_MISSING:
     )
     estimate_and_save(
         missing_files,
-        threshold=4.5,
+        threshold=threshold_4_5_db,
         masks_folder=ALT_4_5_DB_MASKS,
         plots_folder=ALT_4_5_DB_PLOTS,
         overwrite_masks=True,

@@ -15,32 +15,38 @@ The reusable workflow lives in [mask/run_mask.py](mask/run_mask.py). It is desig
 
 ### How to run each step
 
-Open [mask/run_mask.py](mask/run_mask.py) and toggle the flags at the top:
+Edit [mask/mask_config.yaml](mask/mask_config.yaml):
 
-- `RUN_INITIAL_MASKS = True` runs step 1.
-- `RUN_REESTIMATE_MISSING = True` runs step 3 for files whose plots were deleted in step 2.
-- `COPY_CURATED_PLOTS = True` runs step 5. Set `CURATED_PLOTS_FOLDER` to the curated alternative folder you want to copy from.
-- `REMOVE_MASKS_WITHOUT_PLOTS = True` runs step 6.
+- `flags.run_initial_masks: true` runs step 1.
+- `flags.run_reestimate_missing: true` runs step 3 for files whose plots were deleted in step 2.
+- `flags.copy_curated_plots: true` runs step 5. Set `paths.curated_plots_subfolder` to the curated alternative folder you want to copy from.
+- `flags.remove_masks_without_plots: true` runs step 6.
 
 The script prints summary counts for masks and plots and lists how many masks do not have plots.
 
+Run the workflow script:
+
+```bash
+poetry run python mask/run_mask.py
+```
+
 ### Quick start examples
 
-Use these as a guide for each phase by toggling the flags in [mask/run_mask.py](mask/run_mask.py):
+Use these as a guide for each phase by toggling values in [mask/mask_config.yaml](mask/mask_config.yaml):
 
-- Phase 1 (initial masks at 3.0 dB): set `RUN_INITIAL_MASKS = True` and leave the other flags `False`.
-- Phase 2 (recompute missing at 3.0 dB and 4.5 dB): set `RUN_REESTIMATE_MISSING = True` and leave the other flags `False`.
-- Phase 3 (copy curated plots into main): set `COPY_CURATED_PLOTS = True` and set `CURATED_PLOTS_FOLDER` to the curated alternative folder you approved.
-- Phase 4 (final cleanup): set `REMOVE_MASKS_WITHOUT_PLOTS = True`.
+- Phase 1 (initial masks): set `flags.run_initial_masks: true` and keep the other flags `false`.
+- Phase 2 (recompute missing): set `flags.run_reestimate_missing: true` and keep the other flags `false`.
+- Phase 3 (copy curated plots into main): set `flags.copy_curated_plots: true` and set `paths.curated_plots_subfolder` to the curated alternative folder you approved.
+- Phase 4 (final cleanup): set `flags.remove_masks_without_plots: true`.
 
 ### Output locations
 
-The default paths are defined near the top of [mask/run_mask.py](mask/run_mask.py):
+The default paths are defined in [mask/mask_config.yaml](mask/mask_config.yaml):
 
 - Events (input): `/mnt/fscompute_shared/simulation_dataset/events`
 - Masks (main): `/mnt/fscompute_shared/simulation_dataset/masks`
 - Plots (main): `/mnt/fscompute_shared/simulation_dataset/masks_plots`
 - Alternative outputs: `/mnt/fscompute_shared/simulation_dataset/masks_plots_alternative`
 
-If you need different locations, update the constants in [mask/run_mask.py](mask/run_mask.py).
+If you need different locations, update the `paths` section in [mask/mask_config.yaml](mask/mask_config.yaml).
 

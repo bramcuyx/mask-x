@@ -1,0 +1,22 @@
+paths:
+  events_folder: "/mnt/fscompute_shared/simulation_dataset/events"
+  masks_folder: "/mnt/fscompute_shared/simulation_dataset/masks"
+  plots_folder: "/mnt/fscompute_shared/simulation_dataset/masks_plots"
+  alt_base_folder: "/mnt/fscompute_shared/simulation_dataset/masks_plots_alternative"
+  alt_3_db_plots_subfolder: "plots_thr_3db"
+  alt_3_db_masks_subfolder: "masks_thr_3db"
+  alt_4_5_db_plots_subfolder: "plots_thr_4p5db"
+  alt_4_5_db_masks_subfolder: "masks_thr_4p5db"
+  curated_plots_subfolder: "plots_thr_3db"
+
+processing:
+  resampled_sr: 48000
+  padding: 1.0
+  initial_threshold_db: 3.0
+  reestimate_thresholds_db: [3.0, 4.5]
+
+flags:
+  run_initial_masks: false
+  run_reestimate_missing: false
+  copy_curated_plots: false
+  remove_masks_without_plots: false
