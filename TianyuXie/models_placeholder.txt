@@ -1,0 +1,2 @@
+Model checkpoints (*.pt) and ML bundles (*.pkl) are intentionally not included.
+Place them locally in the relevant method's models/ folder when needed.
