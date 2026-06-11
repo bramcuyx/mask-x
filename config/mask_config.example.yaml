@@ -1,0 +1,44 @@
+paths:
+  # -------------------------
+  # Input data
+  # -------------------------
+  # Local marine event clips. Use a local absolute path in mask_config.yaml.
+  marine_events_folder: "data/marine/events"
+
+  # FUSS data root. Prefer setting FUSS_ROOT as an environment variable.
+  # Example:
+  #   export FUSS_ROOT=/path/to/FUSS/ssdata/train
+  fuss_root: ""
+
+  # -------------------------
+  # Generated outputs
+  # -------------------------
+  # All generated files should go under outputs/.
+  outputs_root: "outputs"
+
+  # Trained model artifacts, checkpoints, and model bundles.
+  models_folder: "outputs/models"
+
+  # FUSS-generated logs, split files, temporary files, etc.
+  fuss_outputs_folder: "outputs/fuss"
+
+  # Marine-generated masks, probabilities, and plots.
+  marine_outputs_folder: "outputs/marine"
+
+  # -------------------------
+  # Commit-friendly results
+  # -------------------------
+  # Small CSV summaries that can be committed to GitHub.
+  fuss_results_folder: "results/fuss"
+
+  # -------------------------
+  # Saved model paths for marine inference
+  # -------------------------
+  ml_model_bundle: "outputs/models/fuss_ml_lgbm_crf_model_all.pkl"
+  hybrid_dsp_ml_model_bundle: "outputs/models/fuss_hybrid_dsp_ml_model_all.pkl"
+  dl_unet_checkpoint: "outputs/models/fuss_dl_unet_best.pt"
+  hybrid_dsp_dl_checkpoint: "outputs/models/fuss_hybrid_dsp_dl_best.pt"
+
+processing:
+  resampled_sr: 48000
+  padding: 1.0

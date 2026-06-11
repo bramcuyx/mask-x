@@ -1,33 +1,38 @@
-/mask/mask_test.ipynb
+# Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-eggs/
-.eggs/
-
-parts/
-sdist/
-var/
-wheels/
+.venv/
+.env/
+.env
 *.egg-info/
-.installed.cfg
-*.egg
-.pytest_cache/
-.coverage
-htmlcov/
-.venv
-venv/
-ENV/
+
+# Local config
+mask_config.yaml
+
+# Data
+data/
+FUSS/
+ssdata/
+*.wav
+
+# Outputs
+output/
+outputs/
+marine_tuning_outputs/
+masks/
+masks_plots/
+*.npy
+*.png
+
+# Models / trained artifacts
+*.pt
+*.pth
+*.pkl
+
+# OS / IDE
+.DS_Store
 .vscode/
 .idea/
-*.swp
-*.swo
-.DS_Store
-.gitignore
-.ipynb_checkpoints
-mask/__pycache__/
+
+# Poetry local virtual environment, if created inside project
+.venv/

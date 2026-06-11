@@ -1,19 +1,25 @@
 [tool.poetry]
-name = "mask-x"
-version = "0.1.0"
-description = ""
-authors = ["Bram Cuyx <bram.cuyx@vliz.be>"]
-readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.11"
-Nmf = {git = "git@github.com:bramcuyx/nmf.git", branch = "master"}
-soundfile = "^0.12.1"
-pandas = "^3.0.0"
-PyYAML = "^6.0.2"
+python = ">=3.10,<3.13"
+numpy = "*"
+scipy = "*"
+soundfile = "*"
+matplotlib = "*"
+PyYAML = "*"
+lightgbm = "*"
+scikit-learn = "*"
+torch = "*"
+torchvision = "*"
+torchaudio = "*"
+pandas = "*"
 
+[tool.poetry.group.dev.dependencies]
+ipykernel = "*"
+pytest = "*"
+ruff = "*"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
